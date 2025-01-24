@@ -29,8 +29,8 @@ function renderWeek() {
                             <li class="${task.important ? 'important-task' : ''}" draggable="true" ondragstart="drag(event, '${taskKey}', '${task.text}')">
                                 <div style="flex-grow: 1;">
                                     <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask('${taskKey}', '${task.text}', this)">
-                                    <span class="${task.completed ? 'strikethrough' : ''}" onclick="openEditModal('${taskKey}', '${task.text}', '${task.description.replace(/'/g, "\\'")}', ${task.important})" style="cursor: pointer;">
-                                        ${task.text}
+                                    <span class="${task.completed ? 'strikethrough' : ''}" onclick="openEditModal('${taskKey}', '${encodeURIComponent(task.text)}', '${encodeURIComponent(task.description)}', ${task.important})" style="cursor: pointer;">
+                                        ${task.text.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
                                     </span>
                                 </div>
                             </li>
@@ -94,9 +94,9 @@ function addTask(date) {
 
 function openEditModal(date, taskText, taskDescription, taskImportant) {
     document.getElementById('task-date').value = date;
-    document.getElementById('task-old-text').value = taskText;
-    document.getElementById('task-input').value = taskText;
-    document.getElementById('task-description').value = taskDescription; // Установка описания
+    document.getElementById('task-old-text').value = decodeURIComponent(taskText);
+    document.getElementById('task-input').value = decodeURIComponent(taskText);
+    document.getElementById('task-description').value = decodeURIComponent(taskDescription); // Установка описания
     document.getElementById('task-important').checked = taskImportant; // Установка важности
     $('#taskModal').modal('show');
 }
