@@ -21,7 +21,7 @@ function renderWeek() {
                 <strong>${weekDays[i]}, ${day.toLocaleDateString('ru-RU')}</strong>
                 <div class="input-group mt-2">
                     <input type="text" class="form-control" placeholder="Введите задачу" id="input-${taskKey}" onkeydown="checkEnter(event, '${taskKey}')">
-                    
+                    <button class="btn btn-primary" onclick="addTask('${taskKey}')">Создать задачу</button>
                 </div>
                 <div class="task-list mt-2" ondragover="allowDrop(event)" ondrop="drop(event, '${taskKey}')">
                     <ul class="list-unstyled">
