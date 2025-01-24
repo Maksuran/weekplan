@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ежедневник</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="apple-mobile-web-app-title" content="MiniDay">
+    <meta name="application-name" content="MiniDay">
+    <meta name="msapplication-TileColor" content="#603cba">
+    <meta name="theme-color" content="#ffffff">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Ежедневник</h1>
+        <div class="text-center mb-4">
+            <button id="prev-week" class="btn btn-primary">👈</button>
+            <button id="current-week" class="btn btn-success">Актуал. неделя</button>
+            <button id="next-week" class="btn btn-primary">👉</button>
+        </div>
+        <div id="weekly-tasks" class="list-group">
+            <!-- Блоки для дней недели будут добавлены здесь -->
+        </div>
+    </div>
+
+    <!-- Всплывающее окно для редактирования задачи -->
+    <div class="modal fade" id="taskModal" tabindex="-1" role="dialog" aria-labelledby="taskModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="taskModalLabel">Редактировать задачу</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="task-date">
+                    <input type="hidden" id="task-old-text">
+                    <div class="form-group">
+                        <label for="task-input">Задача</label>
+                        <input type="text" class="form-control" id="task-input" placeholder="Введите задачу">
+                    </div>
+                    <div class="form-group">
+                        <label for="task-description">Описание</label>
+                        <textarea class="form-control" id="task-description" rows="3" placeholder="Введите описание задачи"></textarea>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="task-important">
+                        <label class="form-check-label" for="task-important">Сделать важной</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn btn-danger" id="delete-task">Удалить задачу</button>
+                    <button type="button" class="btn btn-primary" id="save-task">Сохранить задачу</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

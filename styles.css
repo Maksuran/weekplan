@@ -1,0 +1,36 @@
+*{
+    box-sizing: border-box;
+    font-family: monospace;
+}
+.list-group-item {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.task-checkbox {
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+}
+
+.task-list {
+    padding-top: 10px;
+}
+
+.task-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid gainsboro;
+}
+.strikethrough {
+    text-decoration: line-through;
+    color: gray;
+}
+.important-task {
+    color: crimson; /* Цвет текста для важных задач */
+}
