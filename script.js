@@ -29,7 +29,7 @@ function renderWeek() {
                             <li class="${task.important ? 'important-task' : ''}" draggable="true" ondragstart="drag(event, '${taskKey}', '${task.text}')">
                                 <div style="flex-grow: 1;">
                                     <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask('${taskKey}', '${task.text}', this)">
-                                    <span class="${task.completed ? 'strikethrough' : ''}" onclick="openEditModal('${taskKey}', '${task.text}', '${task.description}', ${task.important})" style="cursor: pointer;">
+                                    <span class="${task.completed ? 'strikethrough' : ''}" onclick="openEditModal('${taskKey}', '${task.text}', '${task.description.replace(/'/g, "\\'")}', ${task.important})" style="cursor: pointer;">
                                         ${task.text}
                                     </span>
                                 </div>
