@@ -20,7 +20,7 @@ function renderWeek() {
             <div>
                 <strong>${weekDays[i]}, ${day.toLocaleDateString('ru-RU')}</strong>
                 <div class="input-group mt-2">
-                    <input type="text" class="form-control" placeholder="Введите задачу" id="input-${taskKey}" onkeypress="checkEnter(event, '${taskKey}')">
+                    <input type="text" class="form-control" placeholder="Введите задачу" id="input-${taskKey}" onkeydown="checkEnter(event, '${taskKey}')">
                 </div>
                 <div class="task-list mt-2" ondragover="allowDrop(event)" ondrop="drop(event, '${taskKey}')">
                     <ul class="list-unstyled">
@@ -73,6 +73,7 @@ function drop(event, targetKey) {
 
 function checkEnter(event, date) {
     if (event.key === 'Enter') {
+        event.preventDefault(); // Предотвращаем стандартное поведение
         addTask(date);
     }
 }
