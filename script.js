@@ -1,9 +1,17 @@
 const weekDays = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"];
 let currentDate = new Date();
 
+function getStartOfWeek(date) {
+    const day = date.getDay();
+    // Если воскресенье (0), то вычитаем 6 дней, иначе вычитаем day - 1
+    const diff = day === 0 ? 6 : day - 1;
+    const startOfWeek = new Date(date);
+    startOfWeek.setDate(date.getDate() - diff);
+    return startOfWeek;
+}
+
 function renderWeek() {
-    const startOfWeek = new Date(currentDate);
-    startOfWeek.setDate(currentDate.getDate() - currentDate.getDay() + 1); // Понедельник
+    const startOfWeek = getStartOfWeek(currentDate);
     const weeklyTasks = document.getElementById('weekly-tasks');
     weeklyTasks.innerHTML = '';
 
@@ -51,8 +59,7 @@ function renderWeek() {
     }
 }
 
-// Остальной код остается без изменений
-
+// Остальные функции остаются без изменений
 function allowDrop(event) {
     event.preventDefault();
 }
@@ -66,14 +73,12 @@ function drop(event, targetKey) {
     const data = event.dataTransfer.getData("text/plain");
     const { taskKey, taskText } = JSON.parse(data);
 
-    // Удаляем задачу из исходного дня
     const sourceTasks = JSON.parse(localStorage.getItem(taskKey)) || [];
     const taskIndex = sourceTasks.findIndex(t => t.text === taskText);
     if (taskIndex !== -1) {
         const [task] = sourceTasks.splice(taskIndex, 1);
         localStorage.setItem(taskKey, JSON.stringify(sourceTasks));
 
-        // Добавляем задачу в целевой день
         const targetTasks = JSON.parse(localStorage.getItem(targetKey)) || [];
         targetTasks.push(task);
         localStorage.setItem(targetKey, JSON.stringify(targetTasks));
@@ -84,7 +89,7 @@ function drop(event, targetKey) {
 
 function checkEnter(event, date) {
     if (event.key === 'Enter') {
-        event.preventDefault(); // Предотвращаем стандартное поведение
+        event.preventDefault();
         addTask(date);
     }
 }
@@ -95,9 +100,9 @@ function addTask(date) {
 
     if (taskText) {
         const tasks = JSON.parse(localStorage.getItem(date)) || [];
-        tasks.push({ text: taskText, description: '', completed: false, important: false }); // Описание и важность по умолчанию
+        tasks.push({ text: taskText, description: '', completed: false, important: false });
         localStorage.setItem(date, JSON.stringify(tasks));
-        taskInput.value = ''; // Очистка поля ввода
+        taskInput.value = '';
         renderWeek();
     }
 }
@@ -106,8 +111,8 @@ function openEditModal(date, taskText, taskDescription, taskImportant) {
     document.getElementById('task-date').value = date;
     document.getElementById('task-old-text').value = decodeURIComponent(taskText);
     document.getElementById('task-input').value = decodeURIComponent(taskText);
-    document.getElementById('task-description').value = decodeURIComponent(taskDescription); // Установка описания
-    document.getElementById('task-important').checked = taskImportant; // Установка важности
+    document.getElementById('task-description').value = decodeURIComponent(taskDescription);
+    document.getElementById('task-important').checked = taskImportant;
     $('#taskModal').modal('show');
 }
 
@@ -115,16 +120,16 @@ document.getElementById('save-task').onclick = function() {
     const date = document.getElementById('task-date').value;
     const oldText = document.getElementById('task-old-text').value;
     const newText = document.getElementById('task-input').value.trim();
-    const newDescription = document.getElementById('task-description').value.trim(); // Получаем новое описание
-    const isImportant = document.getElementById('task-important').checked; // Получаем статус важности
+    const newDescription = document.getElementById('task-description').value.trim();
+    const isImportant = document.getElementById('task-important').checked;
 
     if (newText) {
         const tasks = JSON.parse(localStorage.getItem(date)) || [];
         const taskIndex = tasks.findIndex(t => t.text === oldText);
         if (taskIndex !== -1) {
             tasks[taskIndex].text = newText;
-            tasks[taskIndex].description = newDescription; // Сохраняем новое описание
-            tasks[taskIndex].important = isImportant; // Сохраняем статус важности
+            tasks[taskIndex].description = newDescription;
+            tasks[taskIndex].important = isImportant;
             localStorage.setItem(date, JSON.stringify(tasks));
             $('#taskModal').modal('hide');
             renderWeek();
@@ -135,7 +140,6 @@ document.getElementById('save-task').onclick = function() {
 document.getElementById('delete-task').onclick = function() {
     const date = document.getElementById('task-date').value;
     const taskText = document.getElementById('task-old-text').value;
-
     deleteTask(date, taskText);
     $('#taskModal').modal('hide');
 };
