@@ -7,6 +7,10 @@ function renderWeek() {
     const weeklyTasks = document.getElementById('weekly-tasks');
     weeklyTasks.innerHTML = '';
 
+    // Получаем текущую дату для сравнения
+    const today = new Date();
+    const todayString = today.toISOString().split('T')[0];
+
     for (let i = 0; i < 7; i++) {
         const day = new Date(startOfWeek);
         day.setDate(startOfWeek.getDate() + i);
@@ -14,14 +18,18 @@ function renderWeek() {
         const taskKey = day.toISOString().split('T')[0];
         const tasks = JSON.parse(localStorage.getItem(taskKey)) || [];
 
+        // Проверяем, является ли этот день текущим
+        const isToday = taskKey === todayString;
+        const dayStyle = isToday ? 'color: #0d6efd; font-weight: bold;' : '';
+
         const dayBlock = document.createElement('div');
         dayBlock.className = 'list-group-item';
         dayBlock.innerHTML = `
             <div>
-                <strong>${weekDays[i]}, ${day.toLocaleDateString('ru-RU')}</strong>
+                <strong style="${dayStyle}">${weekDays[i]}, ${day.toLocaleDateString('ru-RU')}</strong>
                 <div class="input-group mt-2">
                     <input type="text" class="form-control" placeholder="Введите задачу" id="input-${taskKey}" onkeydown="checkEnter(event, '${taskKey}')">
-                    <button class="btn btn-primary" onclick="addTask('${taskKey}')">✔</button>
+                    <button class="btn btn-primary" onclick="addTask('${taskKey}')">Создать задачу</button>
                 </div>
                 <div class="task-list mt-2" ondragover="allowDrop(event)" ondrop="drop(event, '${taskKey}')">
                     <ul class="list-unstyled">
@@ -42,6 +50,8 @@ function renderWeek() {
         weeklyTasks.appendChild(dayBlock);
     }
 }
+
+// Остальной код остается без изменений
 
 function allowDrop(event) {
     event.preventDefault();
