@@ -5,6 +5,7 @@
     font-weight: 400;
     font-style: normal;
 }
+
 .list-group-item {
     display: flex;
     flex-direction: column;
@@ -36,4 +37,94 @@
 }
 .important-task {
     color: crimson; /* Цвет текста для важных задач */
+}
+
+:root {
+    --background-color: #ffffff;
+    --text-color: #000000;
+    --card-background: #ffffff;
+    --border-color: rgba(0,0,0,.125);
+    --input-background: #ffffff;
+    --input-text: #000000;
+    --btn-default-bg: #f8f9fa;
+    --btn-default-text: #000000;
+    --modal-background: #ffffff;
+    --checkbox-background: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: #1a1a1a;
+        --text-color: #ffffff;
+        --card-background: #1a1a1a;
+        --border-color: rgba(255,255,255,.125);
+        --input-background: #3d3d3d;
+        --input-text: #ffffff;
+        --btn-default-bg: #3d3d3d;
+        --btn-default-text: #ffffff;
+        --modal-background: #2d2d2d;
+        --checkbox-background: #3d3d3d;
+    }
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.list-group-item {
+    background-color: var(--card-background);
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+.form-control {
+    background-color: var(--input-background);
+    color: var(--input-text);
+    border-color: var(--border-color);
+}
+
+.form-control:focus {
+    background-color: var(--input-background);
+    color: var(--input-text);
+}
+
+.btn-default {
+    background-color: var(--btn-default-bg);
+    color: var(--btn-default-text);
+    border-color: var(--border-color);
+}
+
+.modal-content {
+    background-color: var(--modal-background);
+    color: var(--text-color);
+}
+
+.modal-header {
+    border-bottom-color: var(--border-color);
+}
+
+.modal-footer {
+    border-top-color: var(--border-color);
+}
+
+input[type="checkbox"] {
+    background-color: var(--checkbox-background);
+    border-color: var(--border-color);
+}
+
+.list-group-item:hover {
+    background-color: var(--hover-background);
+}
+
+
+@media (prefers-color-scheme: dark) {
+    .task-list li {
+        border-bottom: 1px solid var(--input-background);
+    }
+}
+
+.strikethrough {
+    text-decoration: line-through;
+    opacity: 0.6;
 }
