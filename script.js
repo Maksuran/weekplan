@@ -1,6 +1,18 @@
 const weekDays = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"];
 let currentDate = new Date();
 
+// Функция для обновления темы
+function updateTheme() {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.body.classList.toggle('dark-theme', isDarkMode);
+}
+
+// Слушатель изменений системной темы
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateTheme);
+
+// Вызываем функцию при загрузке страницы
+document.addEventListener('DOMContentLoaded', updateTheme);
+
 function getStartOfWeek(date) {
     const day = date.getDay();
     // Если воскресенье (0), то вычитаем 6 дней, иначе вычитаем day - 1
@@ -11,6 +23,9 @@ function getStartOfWeek(date) {
 }
 
 function renderWeek() {
+    // Обновляем тему перед рендерингом
+    updateTheme();
+    
     const startOfWeek = getStartOfWeek(currentDate);
     const weeklyTasks = document.getElementById('weekly-tasks');
     weeklyTasks.innerHTML = '';
@@ -37,7 +52,7 @@ function renderWeek() {
                 <strong style="${dayStyle}">${weekDays[i]}, ${day.toLocaleDateString('ru-RU')}</strong>
                 <div class="input-group mt-2">
                     <input type="text" class="form-control" placeholder="Введите задачу" id="input-${taskKey}" onkeydown="checkEnter(event, '${taskKey}')">
-                    <button class="btn btn-primary" onclick="addTask('${taskKey}')">✔</button>
+                    <button class="btn btn-primary" onclick="addTask('${taskKey}')">Создать задачу</button>
                 </div>
                 <div class="task-list mt-2" ondragover="allowDrop(event)" ondrop="drop(event, '${taskKey}')">
                     <ul class="list-unstyled">
@@ -59,7 +74,6 @@ function renderWeek() {
     }
 }
 
-// Остальные функции остаются без изменений
 function allowDrop(event) {
     event.preventDefault();
 }
@@ -175,6 +189,44 @@ function deleteTask(date, taskText) {
     localStorage.setItem(date, JSON.stringify(updatedTasks));
     renderWeek();
 }
+
+// HTML для модального окна
+const modalHTML = `
+<div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="taskModalLabel">Редактировать задачу</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="task-date">
+                <input type="hidden" id="task-old-text">
+                <div class="mb-3">
+                    <label for="task-input" class="form-label">Текст задачи</label>
+                    <input type="text" class="form-control" id="task-input">
+                </div>
+                <div class="mb-3">
+                    <label for="task-description" class="form-label">Описание</label>
+                    <textarea class="form-control" id="task-description" rows="3"></textarea>
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="task-important">
+                    <label class="form-check-label" for="task-important">Важная задача</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="delete-task">Удалить</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-primary" id="save-task">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
+`;
+
+// Добавляем модальное окно в DOM
+document.body.insertAdjacentHTML('beforeend', modalHTML);
 
 // Инициализация
 renderWeek();
